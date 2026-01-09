@@ -73,3 +73,10 @@ bin/
 # Node modules
 node_modules/
 /*/node_modules/
+
+# Build output
+dist/
+**/dist/
+
+# Tauri binaries
+frontend/src-tauri/binaries/
