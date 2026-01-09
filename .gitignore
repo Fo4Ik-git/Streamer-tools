@@ -1,0 +1,82 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.env
+.venv/
+
+# --- Node.js / React (Frontend) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+
+# Vite build output
+src/frontend/dist/
+src/frontend/dist-ssr/
+
+# --- StreamerCore Specifics ---
+# Compiled Frontend (served by FastAPI)
+static_dist/
+
+# User Installed Modules (Do not version control local user data)
+# Keep the directory but ignore content, except maybe a .keep file or example
+modules/*
+!modules/.keep
+!modules/example_module/
+!modules/test_module/
+
+# Local databases or config
+*.db
+*.sqlite3
+config.local.yaml
+secrets.json
+
+# Logs
+*.log
+logs/
+
+# Nuitka Compilation Artifacts
+*.build/
+*.dist/
+*.bin
+*.exe
+
+# --- IDEs / Editors ---
+# IntelliJ / JetBrains
+.idea/
+*.iml
+*.iws
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# macOS
+.DS_Store

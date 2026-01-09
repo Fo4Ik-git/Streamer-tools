@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Module Overlay</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: transparent;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        
+        .overlay-container {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(88, 28, 135, 0.9), rgba(109, 40, 217, 0.9));
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            max-width: 400px;
+        }
+        
+        .title {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .status {
+            color: #e0e0e0;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        
+        .message {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .timestamp {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay-container">
+        <div class="title">🎮 Test Module Live</div>
+        <div class="status">Status: <span id="status">Connecting...</span></div>
+        <div class="message">
+            <div id="message">Waiting for data...</div>
+            <div class="timestamp" id="timestamp"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        // Connect to Core
+        const socket = io('http://localhost:8080');
+        
+        socket.on('connect', () => {
+            document.getElementById('status').textContent = 'Connected ✓';
+        });
+        
+        socket.on('disconnect', () => {
+            document.getElementById('status').textContent = 'Disconnected ✗';
+        });
+        
+        // Listen for overlay updates from the module
+        socket.on('overlay_update', (data) => {
+            if (data.module_id === 'test_module') {
+                document.getElementById('message').textContent = data.data.message || 'No message';
+                document.getElementById('timestamp').textContent = new Date().toLocaleTimeString();
+            }
+        });
+        
+        // Example: Auto-update every second
+        setInterval(() => {
+            // You can request data from the module here
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{
+  "id": "test_module",
+  "name": "Test Module",
+  "version": "1.0.0",
+  "entry_point": "backend.py",
+  "permissions": [
+    "chat_read",
+    "chat_send"
+  ],
+  "requirements": [
+    "twitch"
+  ],
+  "settings_schema": {
+    "message_text": {
+      "type": "string",
+      "default": "Hello from Test Module!",
+      "label": "Chat Message"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true,
+      "label": "Enable Sending"
+    },
+    "interval": {
+      "type": "number",
+      "default": 10,
+      "label": "Interval (seconds)"
+    }
+  },
+  "ui": {
+    "settings": "ui/settings.html",
+    "overlay": "ui/overlay.html"
+  }
+}
