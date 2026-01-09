@@ -48,9 +48,28 @@ class BaseModule:
             self.config = data
             await self.on_config_update(data)
 
+        @self.sio.event
+        async def ui_event(data):
+            """Handle events from Custom UI"""
+            event = data.get("event")
+            payload = data.get("payload")
+            await self.on_ui_event(event, payload)
+
     async def on_config_update(self, new_config):
         """Override this to handle configuration changes."""
         pass
+
+    async def on_ui_event(self, event, payload):
+        """Override this to handle UI events."""
+        pass
+    
+    async def send_to_ui(self, event, payload):
+        """Send data to the Custom UI."""
+        if self.sio.connected:
+            await self.sio.emit("module_ui_event", {
+                "event": event,
+                "payload": payload
+            })
 
     async def register(self):
         await asyncio.sleep(0.1)

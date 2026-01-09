@@ -55,17 +55,24 @@ async def get_integrations():
 @app.post("/api/integrations/{name}/connect")
 async def connect_integration(name: str, request: Request):
     """Connect to a real integration using credentials from DB."""
-    # Get credentials from DB
+    # Use existing credentials OR mock for dev
     async with AsyncSessionLocal() as session:
         from src.core.db.models import Integration
         from sqlalchemy.future import select
         result = await session.execute(select(Integration).where(Integration.platform == name))
         db_integration = result.scalar_one_or_none()
         
-        if not db_integration or not db_integration.credentials:
-            raise HTTPException(status_code=400, detail="Integration credentials not configured. Please configure first.")
+        settings = None
+        if db_integration and db_integration.credentials:
+             settings = db_integration.credentials
         
-        settings = db_integration.credentials
+        # fallback for dev
+        if not settings and name == "twitch":
+             logger.warning(f"No credentials for {name}, using MOCK credentials.")
+             settings = {"client_id": "mock", "client_secret": "mock"}
+             
+        if not settings:
+             raise HTTPException(status_code=400, detail="Integration credentials not configured.")
         
     # Attempt to connect to real API
     success = await INTEGRATION_MANAGER.initialize_integration(name, settings)
