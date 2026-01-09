@@ -1,7 +1,14 @@
-import Fastify from 'fastify';
+import Fastify, { FastifyInstance } from 'fastify';
 import fastifySocketIO from 'fastify-socket.io';
+// @ts-ignore
 import cors from '@fastify/cors';
 import { Server } from 'socket.io';
+
+declare module 'fastify' {
+  interface FastifyInstance {
+    io: Server;
+  }
+}
 
 const server = Fastify({ logger: true });
 
@@ -12,6 +19,7 @@ server.register(cors, {
 });
 
 // 2. Socket.IO
+// @ts-ignore
 server.register(fastifySocketIO, {
     cors: { origin: "*" }
 });
